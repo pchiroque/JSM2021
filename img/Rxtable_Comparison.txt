@@ -1,0 +1,15 @@
+% latex table generated in R 3.6.3 by xtable 1.8-4 package
+% Sun Aug  1 18:53:37 2021
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllllllllllll}
+  \hline
+  \hline
+Habitat & Top & Top & Top & Top & Top & Top & Wall & Wall & Wall & Wall & Wall & Wall \\ 
+  Site & PAB2 & PAB3 & PAB5 & PLeste & SGomes & TIM & PAB2 & PAB3 & PAB5 & PLeste & SGomes & TIM \\ 
+  Dist.Aitchison & 1.952485 & 1.936299 & 1.935781 & 2.070851 & 2.069820 & 1.988483 & 4.434837 & 4.641935 & 4.769363 & 4.736609 & 4.744522 & 4.507507 \\ 
+  mMSE & 0.001935676 & 0.001853942 & 0.001964654 & 0.002529001 & 0.001985855 & 0.001948640 & 0.013789171 & 0.013511697 & 0.015521619 & 0.016500857 & 0.018303454 & 0.014023299 \\ 
+  mKL & 0.1165222 & 0.1154538 & 0.1155616 & 0.1369151 & 0.1276935 & 0.1220968 & 1.3067765 & 1.3538892 & 1.6261020 & 1.6265019 & 1.6154577 & 1.3770052 \\ 
+   \hline
+\end{tabular}
+\end{table}

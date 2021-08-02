@@ -1,0 +1,249 @@
+---
+title: "Hierarchical Dirichlet Regression Model to Benthic Cover Abrolhos Bank."
+author: |
+  | Pamela M. Chiroque-Solano 
+  |
+  | Sciences Department at University of Lisboa, Portugal
+  | Institute of Biology and SAGE-COPPE, Federal University of Rio de Janeiro, Brazil
+  |
+  | This work was done in collaboration with Mariana S. Sá, Larissa M. Martins.
+date: "11st of August, 2021"
+output:
+  slidy_presentation: null
+  toc: yes
+  number_sections: yes
+  duration: 4
+  footer: Copyright (c) 2021, PSolano
+  beamer_presentation: default
+  ioslides_presentation: default
+bibliography: Ref.bib
+---
+
+# Motivation
+
+- Understanding the local **patterns** for the composition data of benthic coral reef dynamic in Abrolhos bank;
+
+- To investigate the **heterogeneity** of the response multivariate under different sites.
+
+# Study Area
+
+<p align="center">
+  <img src="https://pchiroque.github.io/HirDir/Map.png"/>
+</p>
+
+
+# Objectives
+
+- To disintegrate the composition via the **stochastic representation** for Dirichlet random vector;
+
+- To model the variability **effects by sites** including a hierarchical structure;
+
+- To achieve **flexibility** with the proposed model, so that it can be useful in many settings.
+
+# Proposal
+
+- **Combine approach**: Compositional data model form [@Maier2014], strategy Bayesian approach from [@Holger2018] and multilevel structure from [@gelman_hill_2006];
+
+- The filtered information throught the **decomposition** of the Dirichlet distribution parameter into two components: **level and precision**;
+
+- This **decomposition** allows us to obtain a **flexibility** proposal.
+
+# Notation
+
+[@Wang2011]
+- $n$: The number of observations 
+
+- $C$: Total number of components 
+
+- $\bfy_i=(y_{i1}, \ldots,y_{iC})'$: Vector of proportions 
+
+- $y_{ic}$: The proportion of coverage at observation $i=1,\ldots,n$ of component $c=1,\ldots,C$. 
+
+- $\sum_{c=1}^{C}y_{ic} = 1$: Constrain
+
+**Rewritten**
+
+- $\bfy$ follows the Dirichlet distribution on $C$-dimensional hyperplane or closed simplex $\mathbb{T}_{C}(1)$. 
+
+- The Dirichlet's probability density function is given by $f(\bfy)$:
+\begin{eqnarray}
+f(\bfy)&=& \frac{\Gamma(\alpha_{1}+\ldots+\alpha_{c})}{\prod _{c=1}^{C} \Gamma(\alpha_{c})} \prod _{c=1}^{C} y_{c}^{ \alpha_{c}-1}, \quad a_c > 0, y_c >0, \sum_{c=1}^{C}y_c=1.
+\end{eqnarray}
+
+
+- $E[Y_{c}] = \frac{\alpha_{c}}{\alpha_{0}}$: The expected value for each dimension $c$ of $\bfY$.
+
+- The variance is $Var(Y_{c}) = \frac{\alpha_{c}(\alpha_{0}-\alpha_{c})}{\alpha_{0}^2(\alpha_{0}+1)}$ 
+
+- The covariances $Cov(Y_c,Y_{c'}) = \frac{-\alpha_{c}\alpha_{c'}}{\alpha_{0}^2(\alpha_{0}+1)}$, where $\alpha_{0} = \sum_{c=1}^{C}\alpha_{c}$.
+
+# Hierarchical Dirichlet regression under the Bayesian approach
+Based on [@Maier2014,@Holger2018]
+
+- To include the multilevel structure by area $l=1,\ldots,L$ in the **alternative parametrization**;
+
+- $\mu_{cl} = \mu_c + \epsilon_{\mu_{cl}}$: **level term** 
+
+- $\phi_{l} = \phi + \epsilon_{\phi_l}$: ** precision term**
+
+- random effect $\epsilon$. 
+
+- We have a representation $\bfY_l \sim D(\bfmu_l,\phi_l)$ with parameter $\alpha_{lc} = \mu_{cl}\phi_l$ to return to the Dirichlet distribution's original $\bfalpha_{l}$ parameter. Regressors are introduced by making
+
+\begin{eqnarray}
+\bfY_{il}\mid \bfx_i &\sim& D(\bfmu_{il},\phi_l), \quad i=1,\ldots,n, \quad l=1,\ldots,L,
+\end{eqnarray}\label{DRA}
+
+- $\bfx_i$ is a $P$-dimensional vector of regressors. 
+
+- The expectation vector becomes $\bfmu_{il}=(\mu_{il1}, \ldots ,\mu_{ilC})'$ where 
+- $\mu_{ic} = E(Y_{ilc}\mid x_i)$ is the $c^\text{th}$ element in the expectation vector for observation $i=1,\ldots,n$ and location $l=1,\ldots,L$. 
+
+- The precision for each location $l$ is represented by $\phi_l$.
+
+- The $P$-dimensional coefficients vectors $\bfbeta_{cl}$ for components $c$ and location $l$ is the effect for $\bfx$. 
+
+These covariates define the linear predictors $\eta_{icl} =	f(\mu_{ic}) =  \bfx_i^{\prime}\bfbeta_{cl}$ on the level mean. 
+
+The expectation vector $\mu_{icl}$ including regressors
+\begin{eqnarray}
+\mu_{icl} &=& E(Y_{icl}\mid\bfx_i)=\frac{\exp( \bfx_i^{\prime}\bfbeta_{cl})}{\sum_{d=1}^{C}\exp(\bfx_i^{\prime}\bfbeta_{dl})}, \quad \mu_{icl}\in(0,1)
+\end{eqnarray}
+
+- $c^\star$ reference component should be chosen and $\bfbeta_{c^\star l}$ is set to zero. **Stochastic representation [@Wang2011];
+
+- The expectation vector $\mu_{icl}$ for the $c^\star$ reference component is given by $\mu_{ic^\star l} = \frac{1}{\sum_{d=1}^{C-1} \mu_{idl}}$.
+%$\phi_l =  \exp(\bfz_i^{\prime}\theta_l)$.
+
+- The precision part $\xi_l =  h(\phi_l) = \bfz_i^{\prime}\theta_l$ given by
+\begin{eqnarray}
+	\phi_{l} &=& \exp(\bfz_i^{\prime}\theta_{l}), \quad \theta_{l} \in \mathbb{R}
+\end{eqnarray}
+
+- $\bfz_i$ is a $P$-dimensional vector of regressors. 
+
+- Using $\alpha_{icl} = \mu_{icl}\phi_{l}$, we obtain the density related to our proposed model
+\begin{eqnarray}
+f(\bfy_{il}\mid  \bfmu_{il},\phi_l) = \frac{\Gamma(\sum_{c=1}^{C} \mu_{icl}\phi_{l})}{\prod _{c=1}^{C} \Gamma(\mu_{icl}\phi_{l})} \prod _{c=1}^{C} y_{icl}^{ \mu_{icl}\phi_l - 1}, \quad \mu_{icl}\in(0,1), \phi_{l} >0, \sum_{c=1}^{C}y_{icl}=1.
+\end{eqnarray}
+
+
+
+
+## Artificial data
+
+- Compositional data **High and low entropy**
+
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{rrrrrrrrrr}
+		\hline
+		Cases & $\log\phi$ & $\alpha_1$ & $\alpha_2$ & $\alpha_3$ & $a_0 = \sum_{c=1}^{C}\alpha_c$ & $\mu_1$ & $\mu_2$ & $\mu_3$ & Entropy \\ 
+		\hline
+		Case 1 & 1.00 & 2.25 & 3.97 & 1.18 & 7.39 & 0.31 & 0.52 & 0.17 & -1.36 \\ 
+		Case 2 & 0.00 & 0.37 & 0.62 & 0.20 & 1.19 & 0.31 & 0.52 & 0.17 & -3.40 \\ 
+		Case 3 & -1.00 & 0.07 & 0.12 & 0.04 & 0.23 & 0.31 & 0.52 & 0.17 & -37.75 \\ 
+		\hline
+	\end{tabular}
+\caption{Consider a three-components (compositional data). Case 1 $\phi = \exp(1)$, case 2 $\phi = \exp(0)$ and case 3 $\phi = \exp(-1)$, with parameter $\bfalpha$, $a_0$, mean $\bfmu$ and entropy value \citep{Wang2011}.}
+\end{table}\label{table:sim}
+
+<p align="center">
+  <img src="https://pchiroque.github.io/HirDir/phi1.png"/, width="500", height="600" >
+  
+  <img src="https://pchiroque.github.io/HirDir/phineg1.png"/, width="500", height="600" >
+</p>
+
+- Consider a three-components (compositional data). The first simplex contains the information for high entropy (case 1), and low entropy (case 3).
+
+
+# Inference: Posterior sampling
+
+The inference procedure was done under the Bayesian approach using the Hamiltonian Monte Carlo (HMC) method to obtain the approximations to the posterior marginal distributions of interest. Let $\Theta =(\bfbeta,\bfphi)$ be the vector of parameters and the likelihood $L(\bfTheta \mid {\bfy} )=\prod_{i=1}^{n}\prod_{l=1}^{L}f(\bfy_{il} \mid \bfTheta)$. More specifically,
+
+\begin{eqnarray}
+L(\bfTheta \mid \bfy ) = \sum_{i=1}^{n}\sum_{l=1}^{L}( \log \Gamma(\sum_{c=1}^{C} \mu_{icl}\phi_{l})-  \sum_{c=1}^{C}\log \Gamma(\mu_{icl}\phi_l)+  \sum_{c=1}^{C}(\mu_{icl}\phi_l-1)\log(y_{icl})),
+\end{eqnarray}
+
+\noindent where the $\mu_{icl}$ are functions of $\bfbeta_{cl}$ which are unknown components to be estimated. The vector $\bfy_l=(\bfy_{1l},\ldots,\bfy_{nl})$ denotes all the information available provided by the data no local $l$.\\
+
+To complete the model specification we assigned an appropriate proper prior distribution to the parametric vector ${{\bf{\Theta}}}$. Prior independence between the parameters is assumed to the model parameters. The choice of the independent prior distributions was driven by the need of making inference with minimum subjective prior information. The parameter $\theta_l = \log(\phi_l)$ and $\beta_{cl}, \quad c=1,\ldots, C, \quad l=1,\ldots,L$ 
+are normally distributed with zero mean and precision $1/K$ for all effects of the model.\\
+
+Assuming independence in the prior distributions, the posterior distribution is given by
+\begin{eqnarray}\label{posterior}
+\pi(\bfTheta \mid \bfy) \propto L(\bfTheta\mid \bfy)\prod_{l}^{L}\pi(\phi_l)\prod_{c}^{C}\pi(\beta_{cl})
+\end{eqnarray}
+
+Since the joint posterior distribution in (\ref{posterior}) does not have a known closed form, we propose the use of MCMC methods to obtain samples from it. Sampling from the distribution whose density is in equation (\ref{posterior}) is done by Markov chain Monte Carlo (MCMC) using the No-U-Turn-Sampler implemented in the Stan software.
+
+# Aplication: Abrolhos bank
+
+- **Reef Strcutures**
+
+<p align="center">
+  <img src="https://pchiroque.github.io/HirDir/chapeirao.png"/>
+</p>
+
+- **Reference component**
+
+[@Wang2011]
+
+<p align="center">
+  <img src="https://pchiroque.github.io/HirDir/Rep_Stoc.png"/>
+</p>
+
+# Convergence procedure
+<p align="center">
+  <img src="https://pchiroque.github.io/HirDir/convergencia.png"/>
+</p>
+
+<p align="center">
+  <img src="https://pchiroque.github.io/HirDir/traceplot.png"/>
+</p>
+
+
+# Fitting the proposal: Posteior density of $\mathbf{beta}$
+
+<p align="center">
+  <img src="https://pchiroque.github.io/HirDir/beta.png"/>
+</p>
+
+# Fitting the proposal: Posteior density of $\mathbf{theta}$
+
+<p align="center">
+  <img src="https://pchiroque.github.io/HirDir/theta.png"/>
+</p>
+
+# Observed values against Predicted values  
+
+<p align="center">
+  <img src="https://pchiroque.github.io/HirDir/Pred_Obse_Top.png"/>
+</p>
+
+# Metrics comparison by sites
+
+<p align="center">
+  <img src="https://pchiroque.github.io/HirDir/Metrics.png"/, width="500", height="600" >
+</p>
+
+
+<!--
+# Metrics comparison by sites
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrrr}
+  \hline
+metrics & PAB2 & PAB3 & PAB5 & PLeste & SGomes & TIM \\ 
+  \hline
+Dist.Aitchison & 1.952 & 1.936 & 1.936 & 2.071 & 2.070 & 1.988 \\ 
+  KL & 0.117 & 0.115 & 0.116 & 0.137 & 0.128 & 0.122 \\ 
+  MSE & 0.002 & 0.002 & 0.002 & 0.003 & 0.002 & 0.002 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+-->
+## References
+
+- Thanks
